@@ -30,6 +30,19 @@ class App {
         }
       });
     });
+
+    const logoutButton = document.querySelector('#logout-button');
+    const logoutButtonMobile = document.querySelector('#logout-button-mobile');
+
+    const handleLogout = () => {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      location.hash = '#/login';
+      location.reload();
+    };
+
+    if (logoutButton) logoutButton.addEventListener('click', handleLogout);
+    if (logoutButtonMobile) logoutButtonMobile.addEventListener('click', handleLogout);
   }
 
   async renderPage() {
