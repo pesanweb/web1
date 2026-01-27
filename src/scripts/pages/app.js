@@ -28,16 +28,28 @@ class App {
         if (link.contains(event.target)) {
           this.#navigationDrawer.classList.remove('open');
         }
-      })
+      });
     });
   }
 
   async renderPage() {
     const url = getActiveRoute();
     const page = routes[url];
+    const loader = document.querySelector('#loader');
 
-    this.#content.innerHTML = await page.render();
-    await page.afterRender();
+    // Show loader
+    loader.style.display = 'flex';
+
+    // Use View Transition API for smooth transitions
+    const transition = document.startViewTransition(async () => {
+      this.#content.innerHTML = await page.render();
+      await page.afterRender();
+    });
+
+    // Hide loader after transition
+    transition.finished.finally(() => {
+      loader.style.display = 'none';
+    });
   }
 }
 
