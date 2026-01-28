@@ -17,7 +17,11 @@ export default class HomePage {
   }
 
   async afterRender() {
-    // Add any additional logic here if needed
+    // Check if user is logged in
+    const token = localStorage.getItem('token');
+    if (token) {
+      location.hash = '#/stories';
+    }
   }
 
   showLoading() {
