@@ -205,3 +205,7 @@ header {
     display: none;
   }
 }
+/* About Page View Transition */
+#about-page {
+  view-transition-name: about-page;
+}

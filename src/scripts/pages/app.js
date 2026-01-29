@@ -45,6 +45,31 @@ class App {
     if (logoutButtonMobile) logoutButtonMobile.addEventListener('click', handleLogout);
   }
 
+  _updateAuthButton() {
+    const token = localStorage.getItem('token');
+    const logoutButton = document.querySelector('#logout-button');
+    const logoutButtonMobile = document.querySelector('#logout-button-mobile');
+
+    if (token) {
+      if (logoutButton) {
+        logoutButton.textContent = 'Logout';
+        logoutButton.href = 'javascript:void(0)';
+      }
+      if (logoutButtonMobile) {
+        logoutButtonMobile.textContent = 'Logout';
+      }
+    } else {
+      if (logoutButton) {
+        logoutButton.textContent = 'Login';
+        logoutButton.onclick = () => location.hash = '#/login';
+      }
+      if (logoutButtonMobile) {
+        logoutButtonMobile.textContent = 'Login';
+        logoutButtonMobile.onclick = () => location.hash = '#/login';
+      }
+    }
+  }
+
   async renderPage() {
     const url = getActiveRoute();
     const page = routes[url];
@@ -52,6 +77,9 @@ class App {
 
     // Show loader
     loader.style.display = 'flex';
+
+    // Update auth button state
+    this._updateAuthButton();
 
     // Use View Transition API for smooth transitions
     const transition = document.startViewTransition(async () => {

@@ -46,9 +46,9 @@ class StoriesApi {
   }
 
 
-  static async getAllStories() {
+  static async getAllStories({ location = 0 } = {}) {
     try {
-      const response = await fetch(`${CONFIG.BASE_URL}/stories`, {
+      const response = await fetch(`${CONFIG.BASE_URL}/stories?location=${location}`, {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${localStorage.getItem('token')}`,
@@ -67,11 +67,14 @@ class StoriesApi {
     }
   }
 
-  static async addStory({ description, photo }) {
+  static async addStory({ description, photo, lat, lon }) {
     try {
       const formData = new FormData();
       formData.append('description', description);
       formData.append('photo', photo);
+
+      if (lat) formData.append('lat', lat);
+      if (lon) formData.append('lon', lon);
 
       const response = await fetch(`${CONFIG.BASE_URL}/stories`, {
         method: "POST",
@@ -89,6 +92,11 @@ class StoriesApi {
 
       return responseJson;
     } catch (error) {
+      if (error.message.includes('401') || error.message.toLowerCase().includes('unauthorized')) {
+        alert('Sesi anda telah berakhir. Silakan login kembali.');
+        localStorage.removeItem('token');
+        location.hash = '#/login';
+      }
       throw new Error(error.message);
     }
   }
