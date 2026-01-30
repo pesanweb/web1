@@ -5,6 +5,8 @@ import RegisterPage from '../pages/register/register';
 import StoriesPage from '../pages/stories/stories-page';
 import AddStoryPage from '../pages/add-story/add-story-page';
 import Dashboard from '../pages/dashboard/dashboard';
+import FavoritesPage from '../pages/favorites/favorites-page';
+import DetailPage from '../pages/stories/detail-page';
 
 const routes = {
   '/': new HomePage(),
@@ -12,8 +14,10 @@ const routes = {
   '/login': new LoginPage(),
   '/register': new RegisterPage(),
   '/stories': new StoriesPage(),
+  '/stories/:id': new DetailPage(),
   '/add-story': new AddStoryPage(),
   '/dashboard': Dashboard,
+  '/favorites': new FavoritesPage(),
 };
 
 

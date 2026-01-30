@@ -67,6 +67,27 @@ class StoriesApi {
     }
   }
 
+  static async getStoryDetail(id) {
+    try {
+      const response = await fetch(`${CONFIG.BASE_URL}/stories/${id}`, {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+
+      const responseJson = await response.json();
+
+      if (responseJson.error) {
+        throw new Error(responseJson.message);
+      }
+
+      return responseJson;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
   static async addStory({ description, photo, lat, lon }) {
     try {
       const formData = new FormData();
