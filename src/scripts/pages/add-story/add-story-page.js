@@ -176,6 +176,18 @@ class AddStoryPage {
       if (loader) loader.style.display = "flex";
       try {
         await StoriesApi.addStory({ description, photo, lat, lon });
+
+        // Show notification
+        if (Notification.permission === 'granted') {
+          navigator.serviceWorker.ready.then((registration) => {
+            registration.showNotification('Cerita Terkirim! 🚀', {
+              body: 'Cerita inspiratif anda berhasil dibagikan.',
+              icon: '/images/logo.png',
+              badge: '/favicon.png',
+            });
+          });
+        }
+
         alert("Cerita berhasil ditambahkan!");
         location.hash = '#/stories';
       } catch (error) {

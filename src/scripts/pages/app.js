@@ -1,5 +1,16 @@
 import routes from '../routes/routes';
 import { getActiveRoute } from '../routes/url-parser';
+import {
+  generateSubscribeButtonTemplate,
+  generateUnsubscribeButtonTemplate,
+} from '../templates';
+
+import {
+  isServiceWorkerAvailable,
+  urlBase64ToUint8Array,
+} from '../utils';
+
+import { VAPID_PUBLIC_KEY } from '../config';
 
 class App {
   #content = null;
@@ -43,6 +54,7 @@ class App {
 
     if (logoutButton) logoutButton.addEventListener('click', handleLogout);
     if (logoutButtonMobile) logoutButtonMobile.addEventListener('click', handleLogout);
+
   }
 
   _updateAuthButton() {
@@ -70,6 +82,51 @@ class App {
     }
   }
 
+  async #setupNotificationButton() {
+    const pushNotificationTools = document.getElementById('push-notification-tools');
+    if (!pushNotificationTools) return;
+
+    if (!('Notification' in window)) {
+      console.log('Notifications not supported in this browser');
+      return;
+    }
+
+    const registration = await navigator.serviceWorker.ready;
+    let subscription = await registration.pushManager.getSubscription();
+
+    const renderButton = () => {
+      if (subscription) {
+        pushNotificationTools.innerHTML = generateUnsubscribeButtonTemplate();
+        document.getElementById('subscribe-button').addEventListener('click', async () => {
+          await subscription.unsubscribe();
+          subscription = null;
+          renderButton();
+        });
+      } else {
+        pushNotificationTools.innerHTML = generateSubscribeButtonTemplate();
+        document.getElementById('subscribe-button').addEventListener('click', async () => {
+          const permission = await Notification.requestPermission();
+          if (permission === 'granted') {
+            try {
+              const applicationServerKey = urlBase64ToUint8Array(VAPID_PUBLIC_KEY);
+              subscription = await registration.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey,
+              });
+              renderButton();
+            } catch (error) {
+              console.error('Failed to subscribe:', error);
+            }
+          }
+        });
+      }
+    };
+
+    renderButton();
+  }
+
+
+
   async renderPage() {
     const url = getActiveRoute();
     const page = routes[url];
@@ -81,7 +138,17 @@ class App {
     // Update auth button state
     this._updateAuthButton();
 
-    // Use View Transition API for smooth transitions
+    // Use View Transition API for smooth transitions if available
+    if (!document.startViewTransition) {
+      this.#content.innerHTML = await page.render();
+      await page.afterRender();
+      loader.style.display = 'none';
+      if (isServiceWorkerAvailable()) {
+        this.#setupNotificationButton();
+      }
+      return;
+    }
+
     const transition = document.startViewTransition(async () => {
       this.#content.innerHTML = await page.render();
       await page.afterRender();
@@ -90,6 +157,10 @@ class App {
     // Hide loader after transition
     transition.finished.finally(() => {
       loader.style.display = 'none';
+
+      if (isServiceWorkerAvailable()) {
+        this.#setupNotificationButton();
+      }
     });
   }
 }
