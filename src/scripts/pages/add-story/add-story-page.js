@@ -30,7 +30,7 @@ class AddStoryPage {
                       </svg>
                     </div>
                     <div class="ml-3">
-                      <h3 class="text-sm font-medium text-blue-800">Pentingnya Keluarga</h3>
+                      <h2 class="text-sm font-medium text-blue-800">Pentingnya Keluarga</h2>
                       <div class="mt-2 text-sm text-blue-700">
                         <p>Jagalah dirimu dan keluargamu dari api neraka. Abadikan momen berharga dan bagikan lokasi kebaikanmu untuk menginspirasi sesama.</p>
                       </div>

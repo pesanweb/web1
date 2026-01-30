@@ -8,9 +8,9 @@ import iconRetinaUrl from "leaflet/dist/images/marker-icon-2x.png";
 import shadowUrl from "leaflet/dist/images/marker-shadow.png";
 // Atur ulang icon default Leaflet
 L.Icon.Default.mergeOptions({
-  iconUrl,
-  iconRetinaUrl,
-  shadowUrl,
+    iconUrl,
+    iconRetinaUrl,
+    shadowUrl,
 });
 
 const Dashboard = {
@@ -18,7 +18,7 @@ const Dashboard = {
         return `
             <section class="container mx-auto px-6 py-16 flex justify-center animate-in fade-in duration-500">
                 <div class="bg-white p-10 rounded-xl shadow-xl w-full max-w-md border border-gray-100">
-                    <h2 class="text-2xl font-bold text-center text-gray-800 mb-8">Dashboard</h2>
+                    <h1 class="text-2xl font-bold text-center text-gray-800 mb-8">Dashboard</h1>
                     <div id="map" class="h-96 rounded-md border border-gray-300"></div>
                 </div>
             </section>

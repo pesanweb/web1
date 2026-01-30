@@ -5,7 +5,7 @@ class RegisterPage {
         return `
             <section class="container mx-auto px-6 py-16 flex justify-center">
                 <div class="bg-white p-10 rounded-xl shadow-xl w-full max-w-md border border-gray-100">
-                    <h2 class="text-3xl font-bold mb-6 text-gray-800">Halaman Register</h2>
+                    <h1 class="text-3xl font-bold mb-6 text-gray-800">Halaman Register</h1>
                     <form id="registerForm" class="space-y-5">
                         <div class="flex flex-col space-y-2">
                             <label for="name" class="font-semibold text-gray-700">Nama Lengkap</label>

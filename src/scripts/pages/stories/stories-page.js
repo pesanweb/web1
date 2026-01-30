@@ -75,7 +75,7 @@ class StoriesPage {
       <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
         <img src="${story.photoUrl}" alt="${story.name}" class="w-full h-64 object-cover">
         <div class="p-6">
-          <h3 class="font-bold text-xl mb-2 text-gray-800">${story.name}</h3>
+          <h2 class="font-bold text-xl mb-2 text-gray-800">${story.name}</h2>
           <p class="text-gray-600 text-sm mb-4">${new Date(story.createdAt).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
           <p class="text-gray-700 line-clamp-3">${story.description}</p>
         </div>
