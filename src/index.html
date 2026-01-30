@@ -4,7 +4,10 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#4f46e5">
     <link rel="shortcut icon" href="favicon.png">
+    <link rel="manifest" href="./manifest.json">
+    <link rel="apple-touch-icon" href="./images/app-pwa.png">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Open+Sans:wght@400;600&display=swap"
         rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -13,7 +16,8 @@
 
 <body>
     <div id="app-shell">
-        <div id="loader" aria-hidden="true">
+        <div id="loader" class="fixed inset-0 bg-white bg-opacity-80 flex items-center justify-center z-[9999]"
+            style="display: flex;">
             <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-blue-600"></div>
         </div>
 
@@ -27,6 +31,9 @@
                         <li><a href="#/stories" class="hover:text-blue-600 text-pink-500">Stories</a></li>
                         <li><a href="#/add-story" class="hover:text-blue-600 text-pink-500">Add Story</a></li>
                         <li id="push-notification-tools"></li>
+                        <li><button id="install-button"
+                                class="hidden bg-blue-500 text-white px-5 py-2 rounded-lg hover:bg-blue-600 transition-colors">Install
+                                App</button></li>
                         <li><button id="logout-button"
                                 class="bg-pink-500 text-white px-5 py-2 rounded-lg hover:bg-pink-600 transition-colors">Login</button>
                         </li>
@@ -48,6 +55,8 @@
                 <li><a href="#/about" class="block text-pink-500">About</a></li>
                 <li><a href="#/stories" class="block text-pink-500">Stories</a></li>
                 <li><a href="#/add-story" class="block text-pink-500">Add Story</a></li>
+                <li><button id="install-button-mobile" class="hidden block text-pink-500 w-full text-left">Install
+                        App</button></li>
                 <li><button id="logout-button-mobile" class="block text-pink-500 w-full text-left">Login</button>
                 </li>
             </ul>

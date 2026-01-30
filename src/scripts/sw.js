@@ -1,43 +1,19 @@
-const CACHE_NAME = 'story-app-v1';
-const urlsToCache = [
-    '/',
-    '/index.html',
-    '/app.bundle.js',
-    '/favicon.png',
-];
+import { precacheAndRoute } from 'workbox-precaching';
 
-self.addEventListener('install', (event) => {
-    event.waitUntil(
-        caches.open(CACHE_NAME).then((cache) => {
-            return cache.addAll(urlsToCache);
-        })
-    );
+// Workbox will inject the manifest here
+precacheAndRoute(self.__WB_MANIFEST);
+
+self.addEventListener('install', () => {
+    self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
     event.waitUntil(
-        caches.keys().then((cacheNames) => {
-            return Promise.all(
-                cacheNames.map((cacheName) => {
-                    if (cacheName !== CACHE_NAME) {
-                        return caches.delete(cacheName);
-                    }
-                })
-            );
-        })
-    );
-});
-
-self.addEventListener('fetch', (event) => {
-    event.respondWith(
-        caches.match(event.request).then((response) => {
-            return response || fetch(event.request);
-        })
+        clients.claim()
     );
 });
 
 self.addEventListener('push', (event) => {
-
     console.log('[Service Worker] Push Received.');
 
     const notificationData = {
