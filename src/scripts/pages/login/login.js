@@ -1,4 +1,5 @@
-import StoriesApi from '../../data/api';
+import authService from '../../services/auth-service';
+import loadingManager from '../../utils/loading';
 
 class LoginPage {
     async render() {
@@ -31,29 +32,48 @@ class LoginPage {
             e.preventDefault();
             const email = document.querySelector('#email').value;
             const password = document.querySelector('#password').value;
-            const loader = document.querySelector("#loader");
 
             const formContainer = document.querySelector('.container');
             formContainer.classList.add('animate-out', 'fade-out', 'duration-500');
 
-            loader.style.display = "flex";
+            loadingManager.show();
             try {
-                const response = await StoriesApi.login({ email, password });
-                
-                localStorage.setItem('token', response.loginResult.token);
-                localStorage.setItem('user', JSON.stringify(response.loginResult));
+                const response = await authService.login({ email, password });
 
-                alert("Login Berhasil!");
+                // Show success message
+                this.showNotification('Login Berhasil!', 'success');
+
                 setTimeout(() => {
                     location.hash = '#/';
                 }, 500);
             } catch (error) {
-                alert(`Login gagal: ${error.message}`);
+                this.showNotification(`Login gagal: ${error.message}`, 'error');
                 formContainer.classList.remove('animate-out', 'fade-out');
             } finally {
-                loader.style.display = "none";
+                loadingManager.hide();
             }
         });
+    }
+
+    showNotification(message, type = 'info') {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 animate-in slide-in-from-top duration-300 ${
+            type === 'success' ? 'bg-green-500 text-white' :
+            type === 'error' ? 'bg-red-500 text-white' :
+            'bg-blue-500 text-white'
+        }`;
+        notification.textContent = message;
+
+        document.body.appendChild(notification);
+
+        // Remove after 3 seconds
+        setTimeout(() => {
+            notification.classList.add('animate-out', 'fade-out');
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 300);
+        }, 3000);
     }
 }
 

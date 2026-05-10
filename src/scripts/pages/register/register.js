@@ -1,9 +1,10 @@
-import StoriesApi from "../../data/api";
+import authService from "../../services/auth-service";
+import loadingManager from "../../utils/loading";
 
 class RegisterPage {
     async render() {
         return `
-            <section class="container mx-auto px-6 py-16 flex justify-center">
+            <section class="container mx-auto px-6 py-16 flex justify-center animate-in fade-in duration-500">
                 <div class="bg-white p-10 rounded-xl shadow-xl w-full max-w-md border border-gray-100">
                     <h1 class="text-3xl font-bold mb-6 text-gray-800">Halaman Register</h1>
                     <form id="registerForm" class="space-y-5">
@@ -38,20 +39,41 @@ class RegisterPage {
             const email = document.querySelector("#email").value;
             const password = document.querySelector("#password").value;
 
-            const loader = document.querySelector("#loader");
-            loader.style.display = "flex";
+            loadingManager.show();
             try {
-                await StoriesApi.register({ name, email, password });
-                alert("Registrasi berhasil! Silakan login.");
-                location.hash = "#/login";
+                await authService.register({ name, email, password });
+                this.showNotification("Registrasi berhasil! Silakan login.", 'success');
+                setTimeout(() => {
+                    location.hash = "#/login";
+                }, 1500);
             } catch (e) {
-                alert(`Registrasi gagal: ${e.message}`);
+                this.showNotification(`Registrasi gagal: ${e.message}`, 'error');
             } finally {
-                loader.style.display = "none";
+                loadingManager.hide();
             }
         });
     }
 
+    showNotification(message, type = 'info') {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 animate-in slide-in-from-top duration-300 ${
+            type === 'success' ? 'bg-green-500 text-white' :
+            type === 'error' ? 'bg-red-500 text-white' :
+            'bg-blue-500 text-white'
+        }`;
+        notification.textContent = message;
+
+        document.body.appendChild(notification);
+
+        // Remove after 3 seconds
+        setTimeout(() => {
+            notification.classList.add('animate-out', 'fade-out');
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 300);
+        }, 3000);
+    }
 }
 
 export default RegisterPage;

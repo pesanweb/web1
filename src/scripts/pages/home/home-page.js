@@ -4,7 +4,7 @@ export default class HomePage {
       <section class="flex flex-col md:flex-row items-center min-h-[70vh] animate-in fade-in duration-500">
         <div class="w-full md:w-1/2 p-8 md:p-16">
           <h1 class="text-4xl md:text-5xl font-bold text-gray-800 leading-tight">Pengenalan: Dunia Pengasuhan <span class="text-pink-500">Modern</span></h1>
-          
+
           <div class="mt-8 space-y-6 text-gray-700">
             <div>
               <h2 class="text-2xl font-bold text-gray-800 flex items-center mb-4">
@@ -56,28 +56,10 @@ export default class HomePage {
 
   async afterRender() {
     // Check if user is logged in
-    // Check if user is logged in
     const token = localStorage.getItem('token');
-    // if (token) {
-    //   location.hash = '#/stories';
-    // }
-  }
-
-  showLoading() {
-    document.getElementById('loading-container').innerHTML = `
-      <div class="loader"></div>
-    `;
-  }
-
-  hideLoading() {
-    document.getElementById('loading-container').innerHTML = '';
-  } showLoading() {
-    document.getElementById('loading-container').innerHTML = `
-      <div class="loader"></div>
-    `;
-  }
-
-  hideLoading() {
-    document.getElementById('loading-container').innerHTML = '';
+    if (token) {
+      // Redirect to stories page if already logged in
+      location.hash = '#/stories';
+    }
   }
 }

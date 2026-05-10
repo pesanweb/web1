@@ -7,6 +7,7 @@ import AddStoryPage from '../pages/add-story/add-story-page';
 import Dashboard from '../pages/dashboard/dashboard';
 import FavoritesPage from '../pages/favorites/favorites-page';
 import DetailPage from '../pages/stories/detail-page';
+import NotFoundPage from '../pages/not-found/not-found-page';
 
 const routes = {
   '/': new HomePage(),
@@ -18,6 +19,8 @@ const routes = {
   '/add-story': new AddStoryPage(),
   '/dashboard': Dashboard,
   '/favorites': new FavoritesPage(),
+  // Wildcard route for 404
+  '*': new NotFoundPage(),
 };
 
 

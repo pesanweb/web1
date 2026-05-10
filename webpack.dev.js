@@ -6,6 +6,7 @@ const { InjectManifest } = require('workbox-webpack-plugin');
 
 module.exports = merge(common, {
   mode: 'development',
+  devtool: 'source-map',
   module: {
     rules: [
       {
