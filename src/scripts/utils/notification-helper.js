@@ -1,4 +1,4 @@
-import { VAPID_PUBLIC_KEY } from '../config';
+import { defaultConfig as CONFIG } from '../config';
 
 const NotificationHelper = {
     async _checkAvailability() {
@@ -22,7 +22,7 @@ const NotificationHelper = {
         const registration = await navigator.serviceWorker.ready;
         return registration.pushManager.subscribe({
             userVisibleOnly: true,
-            applicationServerKey: this._urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
+            applicationServerKey: this._urlBase64ToUint8Array(CONFIG.VAPID_PUBLIC_KEY),
         });
     },
 
