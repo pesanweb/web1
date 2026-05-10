@@ -15,32 +15,37 @@
 </head>
 
 <body>
+    <!-- Skip to main content link for keyboard navigation -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-500 text-white px-4 py-2 rounded z-[10000]">
+        Skip to main content
+    </a>
+
     <div id="app-shell">
         <div id="loader" class="fixed inset-0 bg-white bg-opacity-80 flex items-center justify-center z-[9999]"
-            style="display: flex;">
-            <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-blue-600"></div>
+            style="display: flex;" aria-label="Loading" aria-busy="true">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-blue-600" role="status" aria-hidden="true"></div>
         </div>
 
         <header class="bg-white shadow-md sticky top-0 z-50">
             <div class="container mx-auto px-6 h-20 flex justify-between items-center">
-                <a href="#/" class="brand-name text-2xl font-bold text-blue-700">Orang Muda</a>
-                <nav class="hidden md:block">
+                <a href="#/" class="brand-name text-2xl font-bold text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded">Orang Muda</a>
+                <nav class="hidden md:block" role="navigation" aria-label="Main navigation">
                     <ul class="flex space-x-8 font-semibold items-center">
-                        <li><a href="#/" class="hover:text-blue-600 text-pink-500">Beranda</a></li>
-                        <li><a href="#/about" class="hover:text-blue-600 text-pink-500">About</a></li>
-                        <li><a href="#/stories" class="hover:text-blue-600 text-pink-500">Stories</a></li>
-                        <li><a href="#/favorites" class="hover:text-blue-600 text-pink-500">Favorites</a></li>
-                        <li><a href="#/add-story" class="hover:text-blue-600 text-pink-500">Add Story</a></li>
-                        <li id="push-notification-tools"></li>
+                        <li><a href="#/" class="hover:text-blue-600 text-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-500 rounded px-2">Beranda</a></li>
+                        <li><a href="#/about" class="hover:text-blue-600 text-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-500 rounded px-2">About</a></li>
+                        <li><a href="#/stories" class="hover:text-blue-600 text-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-500 rounded px-2">Stories</a></li>
+                        <li><a href="#/favorites" class="hover:text-blue-600 text-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-500 rounded px-2">Favorites</a></li>
+                        <li><a href="#/add-story" class="hover:text-blue-600 text-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-500 rounded px-2">Add Story</a></li>
+                        <li id="push-notification-tools" role="status" aria-live="polite"></li>
                         <li><button id="install-button"
-                                class="hidden bg-blue-500 text-white px-5 py-2 rounded-lg hover:bg-blue-600 transition-colors">Install
+                                class="hidden bg-blue-500 text-white px-5 py-2 rounded-lg hover:bg-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">Install
                                 App</button></li>
                         <li><button id="logout-button"
-                                class="bg-pink-500 text-white px-5 py-2 rounded-lg hover:bg-pink-600 transition-colors">Login</button>
+                                class="bg-pink-500 text-white px-5 py-2 rounded-lg hover:bg-pink-600 transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500">Login</button>
                         </li>
                     </ul>
                 </nav>
-                <button id="drawer-button" class="md:hidden text-3xl p-2" aria-label="Buka Menu">☰</button>
+                <button id="drawer-button" class="md:hidden text-3xl p-2 focus:outline-none focus:ring-2 focus:ring-pink-500 rounded" aria-label="Buka Menu" aria-expanded="false" aria-controls="navigation-drawer">☰</button>
             </div>
         </header>
 
@@ -48,24 +53,28 @@
 
     <div id="drawer-overlay" class="drawer-overlay"></div>
     <nav id="navigation-drawer"
-        class="navigation-drawer fixed top-0 left-0 h-full w-64 bg-white shadow-2xl -translate-x-full md:hidden">
+        class="navigation-drawer fixed top-0 left-0 h-full w-64 bg-white shadow-2xl -translate-x-full md:hidden"
+        role="navigation"
+        aria-label="Mobile navigation"
+        aria-modal="true"
+        aria-hidden="true">
         <div class="p-6">
-            <button id="close-drawer" class="text-2xl mb-8">✕</button>
+            <button id="close-drawer" class="text-2xl mb-8 focus:outline-none focus:ring-2 focus:ring-pink-500 rounded" aria-label="Tutup menu">✕</button>
             <ul class="space-y-6 text-lg font-semibold">
-                <li><a href="#/" class="block text-pink-500">Beranda</a></li>
-                <li><a href="#/about" class="block text-pink-500">About</a></li>
-                <li><a href="#/stories" class="block text-pink-500">Stories</a></li>
-                <li><a href="#/favorites" class="block text-pink-500">Favorites</a></li>
-                <li><a href="#/add-story" class="block text-pink-500">Add Story</a></li>
-                <li><button id="install-button-mobile" class="hidden block text-pink-500 w-full text-left">Install
+                <li><a href="#/" class="block text-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-500 rounded px-2 py-1">Beranda</a></li>
+                <li><a href="#/about" class="block text-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-500 rounded px-2 py-1">About</a></li>
+                <li><a href="#/stories" class="block text-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-500 rounded px-2 py-1">Stories</a></li>
+                <li><a href="#/favorites" class="block text-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-500 rounded px-2 py-1">Favorites</a></li>
+                <li><a href="#/add-story" class="block text-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-500 rounded px-2 py-1">Add Story</a></li>
+                <li><button id="install-button-mobile" class="hidden block text-pink-500 w-full text-left focus:outline-none focus:ring-2 focus:ring-pink-500 rounded px-2 py-1">Install
                         App</button></li>
-                <li><button id="logout-button-mobile" class="block text-pink-500 w-full text-left">Login</button>
+                <li><button id="logout-button-mobile" class="block text-pink-500 w-full text-left focus:outline-none focus:ring-2 focus:ring-pink-500 rounded px-2 py-1">Login</button>
                 </li>
             </ul>
         </div>
     </nav>
 
-    <main id="main-content" class="min-h-[80vh]"></main>
+    <main id="main-content" class="min-h-[80vh]" role="main" tabindex="-1"></main>
 
     <footer class="bg-gray-900 text-white py-8 mt-12 text-center">
         <p class="font-bold">Tim Konsultan Keluarga</p>
