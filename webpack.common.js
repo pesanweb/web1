@@ -6,6 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
   entry: {
     app: path.resolve(__dirname, 'src/scripts/index.js'),
+    sw: path.resolve(__dirname, 'src/scripts/sw.js'),
   },
   output: {
     filename: '[name].[contenthash].js',
@@ -67,4 +68,21 @@ module.exports = {
       },
     },
   },
+  devServer: {
+    host: '0.0.0.0',
+    port: 9000,
+    // Proxy API calls to the remote server to avoid CORS issues
+    proxy: [
+      {
+        context: '/v1',
+        target: 'https://story-api.dicoding.dev',
+        changeOrigin: true,
+        secure: false,
+      },
+    ],
+    static: {
+      directory: path.resolve(__dirname, 'dist'),
+    },
+    hot: true,
+  }
 };

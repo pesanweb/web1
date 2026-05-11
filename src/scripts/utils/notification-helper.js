@@ -1,5 +1,6 @@
-import { defaultConfig as CONFIG } from '../config';
-
+import { defaultConfig as CONFIG, VAPID_PUBLIC_KEY } from '../config';
+import { convertBase64ToUint8Array } from './index';
+import { subscribePushNotification, unsubscribePushNotification } from '../data/api';
 const NotificationHelper = {
     async _checkAvailability() {
         return 'serviceWorker' in navigator && 'PushManager' in window;
@@ -20,15 +21,20 @@ const NotificationHelper = {
 
     async _subscribeUser() {
         const registration = await navigator.serviceWorker.ready;
-        return registration.pushManager.subscribe({
+        const subscription = await registration.pushManager.subscribe({
             userVisibleOnly: true,
-            applicationServerKey: this._urlBase64ToUint8Array(CONFIG.VAPID_PUBLIC_KEY),
+            applicationServerKey: convertBase64ToUint8Array(VAPID_PUBLIC_KEY),
         });
+        // Send subscription data to backend
+        await subscribePushNotification(subscription.toJSON());
+        return subscription;
     },
 
     async _unsubscribeUser() {
         const subscription = await this._getSubscription();
         if (subscription) {
+            // Inform backend before unsubscribing locally
+            await unsubscribePushNotification({ endpoint: subscription.endpoint });
             await subscription.unsubscribe();
         }
     },

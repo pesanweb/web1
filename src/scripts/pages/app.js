@@ -1,6 +1,7 @@
 import * as UrlParser from '../routes/url-parser';
 import routes from '../routes/routes';
 import NotificationHelper from '../utils/notification-helper';
+import { subscribeToPushNotifications } from '../utils/push-notification-helper';
 
 class App {
     constructor({ content, drawerButton, navigationDrawer }) {

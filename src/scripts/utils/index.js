@@ -1,7 +1,21 @@
+export const convertBase64ToUint8Array = (base64String) => {
+  // Pad base64 string if required
+  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding)
+    .replace(/-/g, '+')
+    .replace(/_/g, '/');
+  const rawData = atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+};
+
 export const registerServiceWorker = async () => {
     if ('serviceWorker' in navigator) {
         try {
-            await navigator.serviceWorker.register('./sw.js');
+            const registration = await navigator.serviceWorker.register('./sw.js');
             console.log('ServiceWorker registered');
         } catch (error) {
             console.error('ServiceWorker registration failed:', error);

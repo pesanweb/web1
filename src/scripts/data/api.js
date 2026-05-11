@@ -124,3 +124,46 @@ class StoriesApi {
 }
 
 export default StoriesApi;
+
+// Push notification subscription APIs
+export const subscribePushNotification = async (subscription) => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    alert('Silakan login terlebih dahulu');
+    throw new Error('No auth token');
+  }
+  const response = await fetch(`${CONFIG.BASE_URL}/notifications/subscribe`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(subscription),
+  });
+  const result = await response.json();
+  if (result.error) {
+    throw new Error(result.message);
+  }
+  return result;
+};
+
+export const unsubscribePushNotification = async ({ endpoint }) => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    alert('Silakan login terlebih dahulu');
+    throw new Error('No auth token');
+  }
+  const response = await fetch(`${CONFIG.BASE_URL}/notifications/unsubscribe`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ endpoint }),
+  });
+  const result = await response.json();
+  if (result.error) {
+    throw new Error(result.message);
+  }
+  return result;
+};
