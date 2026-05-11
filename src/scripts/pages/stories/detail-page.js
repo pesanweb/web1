@@ -84,7 +84,7 @@ class DetailPage {
     _createStoryDetailTemplate(story) {
         return `
       <div class="flex flex-col">
-        <img src="${story.photoUrl}" alt="${story.name}" class="w-full max-h-[600px] object-contain bg-gray-50">
+        <img id="detail-story-image" src="${story.photoUrl}" alt="${story.name}" class="w-full max-h-[600px] object-contain bg-gray-50">
         <div class="p-8 md:p-12">
           <h1 class="text-5xl font-extrabold text-gray-900 mb-6">${story.name}</h1>
           <div class="flex items-center text-gray-600 mb-8 border-b pb-6">

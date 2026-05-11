@@ -98,7 +98,7 @@ class StoriesPage {
 
   _createStoryItemTemplate(story, isFavorite) {
     return `
-      <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 relative group">
+      <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 relative group story-item" data-storyid="${story.id}">
         <button class="favorite-button absolute top-4 right-4 z-20 p-3 bg-white rounded-full shadow-md ${isFavorite ? 'is-favorite text-red-500' : 'text-gray-400'} hover:scale-125 transition-transform text-2xl" data-id="${story.id}" aria-label="Simpan ke favorit">
           ${isFavorite ? '&#10084;' : '&#9825;'}
         </button>

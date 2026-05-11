@@ -7,7 +7,7 @@ class App {
         this._content = content;
         this._drawerButton = drawerButton;
         this._navigationDrawer = navigationDrawer;
-
+        this._currentPath = '';
         this._initialAppShell();
     }
 
@@ -79,17 +79,66 @@ class App {
         }
     }
 
+    _getNavigationType(oldPath, newPath) {
+        const oldSegments = UrlParser.parsePathname(oldPath);
+        const newSegments = UrlParser.parsePathname(newPath);
+        // list to detail
+        if (oldSegments.resource === 'stories' && !oldSegments.id && newSegments.resource === 'stories' && newSegments.id) {
+            return 'list-to-detail';
+        }
+        // detail to list
+        if (oldSegments.resource === 'stories' && oldSegments.id && newSegments.resource === 'stories' && !newSegments.id) {
+            return 'detail-to-list';
+        }
+        return 'other';
+    }
+
     async renderPage() {
         this._showLoader();
         const url = UrlParser.getActiveRoute();
+            const currentPathname = UrlParser.getActivePathname();
         const page = routes[url];
         if (page) {
-            this._content.innerHTML = await page.render();
-            await page.afterRender();
+            const navigationType = this._getNavigationType(this._currentPath, UrlParser.getActivePathname());
+            const storyId = UrlParser.parseActivePathname().id;
+            // Pre-transition for list-to-detail
+            if (navigationType === 'list-to-detail' && storyId) {
+                const srcImg = document.querySelector(`.story-item[data-storyid="${storyId}"] img`);
+                if (srcImg) srcImg.style.viewTransitionName = 'story-image';
+            }
+            const renderAndAfter = async () => {
+                this._content.innerHTML = await page.render();
+                await page.afterRender();
+                // Post-transition image handling
+                if (navigationType === 'detail-to-list' && storyId) {
+                    const srcImg = document.querySelector(`.story-item[data-storyid="${storyId}"] img`);
+                    if (srcImg) srcImg.style.viewTransitionName = 'story-image';
+                }
+                if (navigationType === 'list-to-detail') {
+                    const detailImg = document.querySelector('#detail-story-image');
+                    if (detailImg) detailImg.style.viewTransitionName = 'story-image';
+                }
+                if (navigationType === 'detail-to-list' && storyId) {
+                    const srcImg = document.querySelector(`.story-item[data-storyid="${storyId}"] img`);
+                    if (srcImg) srcImg.style.viewTransitionName = 'story-image';
+                }
+            };
+            if (document.startViewTransition) {
+                const transition = document.startViewTransition(renderAndAfter);
+                transition.finished.then(() => {
+                    // Reset viewTransitionName
+                    document.querySelectorAll('[style*="view-transition-name"]').forEach(el => {
+                    el.style.viewTransitionName = '';
+                });
+                });
+            } else {
+                await renderAndAfter();
+            }
         } else {
             this._content.innerHTML = '<h2>Halaman tidak ditemukan</h2>';
         }
         this._updateAuthUI();
+        this._currentPath = currentPathname;
         this._hideLoader();
     }
 
